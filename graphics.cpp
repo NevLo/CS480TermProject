@@ -485,7 +485,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.pop();
 	//Halleys comet
 	speed = { 1, 1, 1 };
-	dist = { 1, 0, 1. };
+	dist = { 50, 0, 50. };
 	rotVector = { 1.,0.,1. };
 	rotSpeed = { .5, 0, .5 };
 	scale = { .27f, .27f, .27f };

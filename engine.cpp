@@ -37,7 +37,7 @@ bool Engine::Initialize()
     }
     glfwSetInputMode(m_window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(m_window->getWindow(), cursorPositionCallBack);
-
+    glfwSetScrollCallback(m_window->getWindow(), scroll_callback);
 
     // No errors
     return true;
@@ -88,10 +88,30 @@ void Engine::Display(GLFWwindow* window, double time) {
     m_graphics->HierarchicalUpdate2(time);
 }
 
-static void cursorPositionCallBack(GLFWwindow* window, double xpos, double ypos) {
+ void Engine::cursorPositionCallBack(GLFWwindow* window, double xposIn, double yposIn) {
 
-    //cout << xpos << " " << ypos << endl;
+    float xpos = static_cast<float>(xposIn);
+    float ypos = static_cast<float>(yposIn);
+
+    if (firstMouse)
+    {
+        lastX = xpos;
+        lastY = ypos;
+        firstMouse = false;
+    }
+
+    float xoffset = xpos - lastX;
+    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+
+    lastX = xpos;
+    lastY = ypos;
+
+    m_graphics->getCamera()->ProcessMouseMovement(xoffset, yoffset);
 }
+ void Engine::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+ {
+    m_graphics->getCamera()->ProcessMouseScroll(static_cast<float>(yoffset));
+ }
 
 void Engine::ProcessInput()
 {
@@ -105,11 +125,11 @@ void Engine::ProcessInput()
         glfwGetKey(m_window->getWindow(), GLFW_KEY_D) == GLFW_RELEASE)
         m_graphics->getCamera()->Update(glm::vec3(0., 0., 0.));
     if (glfwGetKey(m_window->getWindow(), GLFW_KEY_S) == GLFW_PRESS)
-        m_graphics->getCamera()->Update(glm::vec3(0., .1, 0.));
+        m_graphics->getCamera()->ProcessKeyboard(BACKWARD, getDT());
     if (glfwGetKey(m_window->getWindow(), GLFW_KEY_W) == GLFW_PRESS)
-        m_graphics->getCamera()->Update(glm::vec3(0., -.1, 0.));
+        m_graphics->getCamera()->ProcessKeyboard(FORWARD, getDT());
     if (glfwGetKey(m_window->getWindow(), GLFW_KEY_A) == GLFW_PRESS)
-        m_graphics->getCamera()->Update(glm::vec3(-.1, 0., 0.));
+        m_graphics->getCamera()->ProcessKeyboard(LEFT, getDT());
     if (glfwGetKey(m_window->getWindow(), GLFW_KEY_D) == GLFW_PRESS)
-        m_graphics->getCamera()->Update(glm::vec3(.1, 0., 0.));
+        m_graphics->getCamera()->ProcessKeyboard(RIGHT, getDT());
 }
