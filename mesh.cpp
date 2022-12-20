@@ -26,7 +26,7 @@ Mesh::Mesh()
 Mesh::Mesh(glm::vec3 pivot)
 {
 	// Vertex Set Up
-	loadModelFromFile("starship.obj");
+	loadModelFromFile("SpaceShip-1.obj");
 
 	// Model Set Up
 	angle = 0.0f;

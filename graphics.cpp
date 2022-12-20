@@ -57,30 +57,30 @@ bool Graphics::Initialize(int width, int height)
 	}
 
 	// Create a sun
-	m_sun = new Sphere();
-	m_mercury = new Sphere();
-	m_venus = new Sphere();
-	m_earth = new Sphere();
-	m_earth_moon = new Sphere();
-	m_mars = new Sphere();
-	m_mars_moon1 = new Sphere();
-	m_mars_moon2 = new Sphere();
-	m_jupiter = new Sphere();
-	m_jupiter_moon1 = new Sphere();
-	m_jupiter_moon2 = new Sphere();
-	m_saturn = new Sphere();
-	m_saturn_moon1 = new Sphere();
-	m_saturn_moon2 = new Sphere(); 
-	m_uranus = new Sphere();
-	m_uranus_moon1 = new Sphere();
-	m_uranus_moon2 = new Sphere();
-	m_neptune = new Sphere();
-	m_neptune_moon1 = new Sphere();
-	m_neptune_moon2 = new Sphere();
-	m_pluto = new Sphere();
-	m_pluto_moon1 = new Sphere();
-	m_pluto_moon2 = new Sphere();
-	m_comet_haleys = new Sphere();
+	m_sun = new Sphere("2k_sun");
+	m_mercury = new Sphere("Mercury");
+	m_venus = new Sphere("Venus");
+	m_earth = new Sphere("2k_earth_daymap");
+	m_earth_moon = new Sphere("2k_moon");
+	m_mars = new Sphere("Mars");
+	m_mars_moon1 = new Sphere("Ceres"); //decide which is which if it matters, Ceres used as place-holder
+	m_mars_moon2 = new Sphere("Ceres");
+	m_jupiter = new Sphere("Jupiter");
+	m_jupiter_moon1 = new Sphere("Ceres");
+	m_jupiter_moon2 = new Sphere("Eris");
+	m_saturn = new Sphere("Saturn");
+	m_saturn_moon1 = new Sphere("Ceres"); //this is the only Ceres that really belongs
+	m_saturn_moon2 = new Sphere("Ceres");
+	m_uranus = new Sphere("Uranus");
+	m_uranus_moon1 = new Sphere("Ceres");
+	m_uranus_moon2 = new Sphere("Ceres");
+	m_neptune = new Sphere("Neptune");
+	m_neptune_moon1 = new Sphere("Haumea");
+	m_neptune_moon2 = new Sphere("Ceres");
+	m_pluto = new Sphere("Ceres");
+	m_pluto_moon1 = new Sphere("Ceres");
+	m_pluto_moon2 = new Sphere("Ceres");
+	m_comet_haleys = new Sphere("Ceres");
 
 
 	spheres.push_back(m_sun);
