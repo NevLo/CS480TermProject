@@ -70,7 +70,8 @@ private:
     Sphere* m_pluto_moon1;
     Sphere* m_pluto_moon2;
 
-    Sphere* m_comet_haleys;
+    Sphere* m_comet_halleys;
+    
     Mesh* m_rocket;
 
 };

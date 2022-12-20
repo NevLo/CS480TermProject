@@ -80,7 +80,7 @@ bool Graphics::Initialize(int width, int height)
 	m_pluto = new Sphere("Ceres");
 	m_pluto_moon1 = new Sphere("Ceres");
 	m_pluto_moon2 = new Sphere("Ceres");
-	m_comet_haleys = new Sphere("Ceres");
+	m_comet_halleys = new Sphere("Ceres");
 
 
 	spheres.push_back(m_sun);
@@ -106,7 +106,11 @@ bool Graphics::Initialize(int width, int height)
 	spheres.push_back(m_pluto);
 	spheres.push_back(m_pluto_moon1);
 	spheres.push_back(m_pluto_moon2);
-	spheres.push_back(m_comet_haleys);
+	spheres.push_back(m_comet_halleys);
+
+	for (int i = 0; i < 40; i++) {
+		spheres.push_back(new Sphere("Ceres"));
+	}
 
 
 	// Create the second cube;
@@ -479,8 +483,56 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.pop();
 	modelStack.pop();
 	modelStack.pop();
+	//Halleys comet
+	speed = { 1, 1, 1 };
+	dist = { 1, 0, 1. };
+	rotVector = { 1.,0.,1. };
+	rotSpeed = { .5, 0, .5 };
+	scale = { .27f, .27f, .27f };
+	localTransform = modelStack.top();
+	localTransform *= glm::translate(glm::mat4(1.f),
+		glm::vec3(cos(speed[0] * dt) * dist[0], sin(speed[1] * dt) * dist[1], sin(speed[2] * dt) * dist[2]));
+	modelStack.push(localTransform);			// store moon-planet-sun coordinate
+	localTransform *= glm::rotate(glm::mat4(1.f), rotSpeed[0] * (float)dt, rotVector);
+	localTransform *= glm::scale(glm::vec3(scale[0], scale[1], scale[2]));
 
+	if (m_pluto_moon2 != NULL)
+		m_pluto_moon2->Update(localTransform);
+	modelStack.pop();
  	// back to the planet coordinate
+
+	for (int i = 24; i < 44; i++) {
+		speed = { 1.f + rand(), 1.f + rand(), 1.f + rand() };
+		dist = { 22, 0, 22. };
+		rotVector = { 1.f + rand(),0.,1.f + rand() };
+		rotSpeed = { .5, 0, .5 };
+		scale = { .27f, .27f, .27f };
+		localTransform = modelStack.top();
+		localTransform *= glm::translate(glm::mat4(1.f),
+			glm::vec3(cos(speed[0] * dt) * dist[0], sin(speed[1] * dt) * dist[1], sin(speed[2] * dt) * dist[2]));
+		modelStack.push(localTransform);			// store moon-planet-sun coordinate
+		localTransform *= glm::rotate(glm::mat4(1.f), rotSpeed[0] * (float)dt, rotVector);
+		localTransform *= glm::scale(glm::vec3(scale[0], scale[1], scale[2]));
+		spheres[i]->Update(localTransform);
+		modelStack.pop();
+	}
+	for (int i = 44; i < 64; i++) {
+		
+		speed = { 1.f+rand(), 1.f + rand(), 1.f + rand() };
+		dist = { 47, 0, 47. };
+		rotVector = { 1 + rand(),0.,1 + rand() };
+		rotSpeed = { .5, 0, .5 };
+		scale = { .27f, .27f, .27f };
+		localTransform = modelStack.top();
+		localTransform *= glm::translate(glm::mat4(1.f),
+			glm::vec3(cos(speed[0] * dt) * dist[0], sin(speed[1] * dt) * dist[1], sin(speed[2] * dt) * dist[2]));
+		modelStack.push(localTransform);			// store moon-planet-sun coordinate
+		localTransform *= glm::rotate(glm::mat4(1.f), rotSpeed[0] * (float)dt, rotVector);
+		localTransform *= glm::scale(glm::vec3(scale[0], scale[1], scale[2]));
+		spheres[i]->Update(localTransform);
+		modelStack.pop();
+	}
+
 
 	modelStack.pop(); 	// back to the sun coordinate
 	// empy stack
