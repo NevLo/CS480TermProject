@@ -21,8 +21,8 @@ private:
 	float toRadians(float degrees);
 	glm::mat4 model;
 	glm::vec3 pivotLocation;
-
-
+	string textureName;
+	
 
 	GLuint VB;
 	GLuint IB;
@@ -36,13 +36,15 @@ public:
 	Sphere(string s);
 	int getNumVertices();
 	int getNumIndices();
+	bool loadTexture(const char* texFile, int textureType);
 	void init(int);
 	std::vector<unsigned int> getIndices();
 	std::vector<glm::vec3> getVertices();
 	std::vector<glm::vec2> getTexCoords();
 	std::vector<glm::vec3> getNormals();
 	void Update(glm::mat4 model);
-
+	int m_textureID;
+	int m_NormalTextureID;
 	glm::mat4 GetModel();
 
 

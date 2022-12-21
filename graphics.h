@@ -12,6 +12,7 @@ using namespace std;
 #include "pyramid.h"
 #include "MyFirstGLProgram\sphere.h"
 #include "mesh.h"
+
 #define numVBOs 2;
 #define numIBs 2;
 
@@ -21,6 +22,8 @@ static class Graphics
 public:
     Graphics();
     ~Graphics();
+    bool m_hasTexture;
+    bool anyProblem;
     bool Initialize(int width, int height);
     void Update(double dt);
     void HierarchicalUpdate(double dt);

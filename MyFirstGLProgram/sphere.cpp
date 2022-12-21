@@ -1,5 +1,5 @@
 #include "sphere.h"
-
+#include <SOIL2/SOIL2.h>
 Sphere::Sphere()
 {
 	// Vertex Set Up
@@ -65,7 +65,6 @@ glm::mat4 Sphere::GetModel()
 
 void Sphere::Render(GLint posAttribLoc, GLint colAttribLoc)
 {
-
 	glBindVertexArray(vao);
 
 	// Enable vertex attibute arrays for each vertex attrib
@@ -91,6 +90,23 @@ void Sphere::Render(GLint posAttribLoc, GLint colAttribLoc)
 
 }
 
+bool Sphere::loadTexture(const char* texFile, int textureType) {
+	if (textureType == 1) {
+		m_textureID = SOIL_load_OGL_texture(texFile, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+		if (!m_textureID) {
+			cout << "FAILED: Ciuld not open texture file" << endl;
+			return false;
+		}
+	}
+	else if (textureType == 0) {	
+		m_NormalTextureID = SOIL_load_OGL_texture(texFile, SOIL_LOAD_AUTO, SOIL_CREATE_NEW_ID, SOIL_FLAG_INVERT_Y);
+		if (!m_NormalTextureID) {
+			cout << "Failed: could not open normal texture file" << endl;
+			return false;
+		}
+	}
+	return true;
+}
 
 bool Sphere::InitBuffers() {
 
@@ -169,4 +185,3 @@ std::vector<unsigned int> Sphere::getIndices() { return indices; }
 std::vector<glm::vec3> Sphere::getVertices() { return vertices; }
 std::vector<glm::vec2> Sphere::getTexCoords() { return texCoords; }
 std::vector<glm::vec3> Sphere::getNormals() { return normals; }
-

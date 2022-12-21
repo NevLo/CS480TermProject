@@ -1,5 +1,6 @@
 #include "graphics.h"
 #include <vector>
+#include <SOIL2/SOIL2.h>
 
 Graphics::Graphics()
 {
@@ -57,31 +58,118 @@ bool Graphics::Initialize(int width, int height)
 	}
 
 	// Create a sun
-	m_sun = new Sphere("2k_sun");
-	m_mercury = new Sphere("Mercury");
-	m_venus = new Sphere("Venus");
-	m_earth = new Sphere("2k_earth_daymap");
-	m_earth_moon = new Sphere("2k_moon");
-	m_mars = new Sphere("Mars");
-	m_mars_moon1 = new Sphere("Ceres"); //decide which is which if it matters, Ceres used as place-holder
-	m_mars_moon2 = new Sphere("Ceres");
-	m_jupiter = new Sphere("Jupiter");
-	m_jupiter_moon1 = new Sphere("Ceres");
-	m_jupiter_moon2 = new Sphere("Eris");
-	m_saturn = new Sphere("Saturn");
-	m_saturn_moon1 = new Sphere("Ceres"); //this is the only Ceres that really belongs
-	m_saturn_moon2 = new Sphere("Ceres");
-	m_uranus = new Sphere("Uranus");
-	m_uranus_moon1 = new Sphere("Ceres");
-	m_uranus_moon2 = new Sphere("Ceres");
-	m_neptune = new Sphere("Neptune");
-	m_neptune_moon1 = new Sphere("Haumea");
-	m_neptune_moon2 = new Sphere("Ceres");
-	m_pluto = new Sphere("Ceres");
-	m_pluto_moon1 = new Sphere("Ceres");
-	m_pluto_moon2 = new Sphere("Ceres");
-	m_comet_halleys = new Sphere("Ceres");
+	m_sun = new Sphere();
+	if (!m_sun->loadTexture("2k_sun", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}
+	m_mercury = new Sphere();
+	if (!m_mercury->loadTexture("Mercury", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}
+	m_venus = new Sphere();
+	if (!m_venus->loadTexture("Venus", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}
+	m_earth = new Sphere();
+	if (!m_earth->loadTexture("2k_earth_daymap", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}
+	m_earth_moon = new Sphere();
+	if (!m_earth_moon->loadTexture("2k_moon", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}
+	m_mars = new Sphere();
+	if (!m_mars->loadTexture("Mars", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}
+	m_mars_moon1 = new Sphere();
+	if (!m_mars_moon1->loadTexture("Ceres", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}//decide which is which if it matters, Ceres used as place-holder
+	m_mars_moon2 = new Sphere();
+	if (!m_mars_moon2->loadTexture("Ceres", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}
+	m_jupiter = new Sphere();
+	if (!m_jupiter->loadTexture("Jupiter", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}
+	m_jupiter_moon1 = new Sphere();
+	if (!m_jupiter_moon1->loadTexture("Ceres", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}
+	m_jupiter_moon2 = new Sphere();
+	if (!m_jupiter_moon2->loadTexture("Eris", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}
+	m_saturn = new Sphere();
+	if (!m_saturn->loadTexture("Saturn", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}
+	m_saturn_moon1 = new Sphere();
+	if (!m_saturn_moon1->loadTexture("Ceres", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}//this is the only Ceres that really belongs
+	m_saturn_moon2 = new Sphere();
+	if (!m_saturn_moon2->loadTexture("Ceres", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}
+	m_uranus = new Sphere();
+	if (!m_uranus->loadTexture("Uranus", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}
+	m_uranus_moon1 = new Sphere();
+	if (!m_uranus_moon1->loadTexture("Ceres", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}
+	m_uranus_moon2 = new Sphere();
+	if (!m_uranus_moon2->loadTexture("Ceres", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}
+	m_neptune = new Sphere();
+	if (!m_neptune->loadTexture("Neptune", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}
+	m_neptune_moon1 = new Sphere();
+	if (!m_neptune_moon1->loadTexture("Haumea", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}
+	m_neptune_moon2 = new Sphere();
+	if (!m_neptune_moon2->loadTexture("Ceres", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}
 
+	m_comet_halleys = new Sphere();
+	if (!m_comet_halleys->loadTexture("Ceres", 0)) {
+		cout << "FAILED: couldnt open texture file\n";
+		exit(EXIT_FAILURE);
+	}
+
+	m_hasTexture = m_shader->GetUniformLocation("hasTexture");
+	if (m_hasTexture == INVALID_UNIFORM_LOCATION) {
+		printf("hasTexture uniform not found\n");
+		anyProblem = false;
+		}
 
 	spheres.push_back(m_sun);
 	spheres.push_back(m_mercury);
@@ -109,7 +197,7 @@ bool Graphics::Initialize(int width, int height)
 	spheres.push_back(m_comet_halleys);
 
 	for (int i = 0; i < 40; i++) {
-		spheres.push_back(new Sphere("Ceres"));
+		spheres.push_back(new Sphere());
 	}
 	std::cout << spheres.size() << "\n";
 
