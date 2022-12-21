@@ -84,7 +84,7 @@ bool Graphics::Initialize(int width, int height)
 	m_neptune_moon2 = new Sphere("../assets/Ceres.jpg", "../assets/Ceres-n.jpg");
 
 	m_rocket = new Mesh(glm::vec3(0.0f, 0.0f, 0.0f), "../assets/SpaceShip-1.obj", "../assets/SpaceShip-1.png");
-	m_skybox = new Sphere("../assets/Galaxy.jpg", "../assets/Galaxy.jpg");
+	m_skybox = new Sphere("../assets/2k_stars_milky_way.jpg", "../assets/2k_stars_milky_way.jpg");
 
 	spheres.push_back(m_sun);
 	spheres.push_back(m_mercury);
@@ -651,13 +651,17 @@ void Graphics::Render()
 		if (m_rocket->hasTex) {
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, m_rocket->getTextureID());
-			GLuint sampler = m_shader->GetUniformLocation("samp0");
+			GLuint sampler = m_shader->GetUniformLocation("sp");
 			if (sampler == INVALID_UNIFORM_LOCATION)
 			{
 				printf("Sampler Not found not found\n");
 			}
+
+			glUniformMatrix3fv(m_shader->GetUniformLocation("normMatrix"), 1, GL_FALSE, glm::value_ptr(glm::transpose(glm::inverse(glm::mat3(m_camera->GetProjection() * m_rocket->GetModel())))));
+
 			glUniform1i(sampler, 0);
 			m_rocket->Render(m_positionAttrib, m_colorAttrib, m_tcAttrib, m_hasTexture);
+
 		}
 	}/*
 	if (m_skybox != NULL) {

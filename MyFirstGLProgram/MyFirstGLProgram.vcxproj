@@ -166,6 +166,7 @@
     <Image Include="..\assets\2k_earth_daymap.jpg" />
     <Image Include="..\assets\2k_moon-n.jpg" />
     <Image Include="..\assets\2k_moon.jpg" />
+    <Image Include="..\assets\2k_stars_milky_way.jpg" />
     <Image Include="..\assets\2k_sun.jpg" />
     <Image Include="..\assets\Ceres-n.jpg" />
     <Image Include="..\assets\Ceres.jpg" />

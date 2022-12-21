@@ -168,5 +168,8 @@
     <Image Include="..\assets\Venus-n.jpg">
       <Filter>Resources</Filter>
     </Image>
+    <Image Include="..\assets\2k_stars_milky_way.jpg">
+      <Filter>Resources</Filter>
+    </Image>
   </ItemGroup>
 </Project>
