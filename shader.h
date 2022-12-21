@@ -16,9 +16,9 @@ class Shader
     bool Finalize();
     GLint GetUniformLocation(const char* pUniformName);
     GLint GetAttribLocation(const char* pAttriName);
-
+    GLuint m_shaderProg;
   private:
-    GLuint m_shaderProg;    
+
     std::vector<GLuint> m_shaderObjList;
 };
 

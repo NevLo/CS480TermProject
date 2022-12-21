@@ -144,10 +144,9 @@
     <ClInclude Include="..\graphics_headers.h" />
     <ClInclude Include="..\mesh.h" />
     <ClInclude Include="..\object.h" />
-    <ClInclude Include="..\pyramid.h" />
     <ClInclude Include="..\shader.h" />
+    <ClInclude Include="..\Texture.h" />
     <ClInclude Include="..\window.h" />
-    <ClInclude Include="..\cube.h" />
     <ClInclude Include="sphere.h" />
   </ItemGroup>
   <ItemGroup>
@@ -157,11 +156,42 @@
     <ClCompile Include="..\main.cpp" />
     <ClCompile Include="..\mesh.cpp" />
     <ClCompile Include="..\object.cpp" />
-    <ClCompile Include="..\pyramid.cpp" />
     <ClCompile Include="..\shader.cpp" />
+    <ClCompile Include="..\Texture.cpp" />
     <ClCompile Include="..\window.cpp" />
-    <ClCompile Include="..\cube.cpp" />
     <ClCompile Include="sphere.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\assets\2k_earth_daymap-n.jpg" />
+    <Image Include="..\assets\2k_earth_daymap.jpg" />
+    <Image Include="..\assets\2k_moon-n.jpg" />
+    <Image Include="..\assets\2k_moon.jpg" />
+    <Image Include="..\assets\2k_sun.jpg" />
+    <Image Include="..\assets\Ceres-n.jpg" />
+    <Image Include="..\assets\Ceres.jpg" />
+    <Image Include="..\assets\Eris-n.jpg" />
+    <Image Include="..\assets\Eris.jpg" />
+    <Image Include="..\assets\Galaxy-cubemap1.png" />
+    <Image Include="..\assets\Galaxy-cubemap2.png" />
+    <Image Include="..\assets\Galaxy.jpg" />
+    <Image Include="..\assets\Galaxy2.jpg" />
+    <Image Include="..\assets\Haumea-n.jpg" />
+    <Image Include="..\assets\Haumea.jpg" />
+    <Image Include="..\assets\Jupiter-n.jpg" />
+    <Image Include="..\assets\Jupiter.jpg" />
+    <Image Include="..\assets\Mars-n.jpg" />
+    <Image Include="..\assets\Mars.jpg" />
+    <Image Include="..\assets\Material_1360.jpg" />
+    <Image Include="..\assets\Mercury-n.jpg" />
+    <Image Include="..\assets\Mercury.jpg" />
+    <Image Include="..\assets\Neptune-n.jpg" />
+    <Image Include="..\assets\Neptune.jpg" />
+    <Image Include="..\assets\Saturn.jpg" />
+    <Image Include="..\assets\SpaceShip-1.png" />
+    <Image Include="..\assets\Uranus-n.jpg" />
+    <Image Include="..\assets\Uranus.jpg" />
+    <Image Include="..\assets\Venus-n.jpg" />
+    <Image Include="..\assets\Venus.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

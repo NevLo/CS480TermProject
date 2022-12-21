@@ -6,16 +6,18 @@
 #include "window.h"
 #include "graphics.h"
 
+static void cursorPositionCallBack(GLFWwindow*, double xpos, double ypos);
+static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
+
+// Update camera animation here.
+
 
 
 class Engine
 {
-  public:
-      
-      //constructor
-      Engine();
-    Engine(const char*  name, int width, int height);
-    //destructor
+public:
+    Engine(const char* name, int width, int height);
+
     ~Engine();
     bool Initialize();
     void Run();
@@ -23,28 +25,20 @@ class Engine
     unsigned int getDT();
     long long GetCurrentTimeMillis();
     void Display(GLFWwindow*, double);
-    static void cursorPositionCallBack(GLFWwindow* window, double xposIn, double yposIn);
-    static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
-   
-    void setSpeed(glm::vec3 spd) { speed = spd; };
-    const char* m_WINDOW_NAME; //window name
+    static void cursor_position_callback(GLFWwindow* window, double xpos, double ypos);
+
+
+private:
+    // Window related variables
+    Window* m_window;
+    const char* m_WINDOW_NAME;
     int m_WINDOW_WIDTH;
     int m_WINDOW_HEIGHT;
-    bool m_FULLSCREEN; // is fullscreen.
-    float lastX;
-    float lastY;
-    bool firstMouse;
+    bool m_FULLSCREEN;
 
 
-  private:
-    // Window related variables
-    Window *m_window;    //variable for the window.
+    Graphics* m_graphics;
 
-
-    glm::vec3 speed = glm::vec3(0.f,0.f,0.f);
-
-
-    static Graphics* m_graphics;
 
     bool m_running;
 };

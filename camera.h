@@ -6,12 +6,14 @@ enum Camera_Movement {
     FORWARD,
     BACKWARD,
     LEFT,
-    RIGHT
+    RIGHT,
+    FASTER,
+    SLOWER
 };
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
 const float SPEED = .025f;
-const float SENSITIVITY = 0.01f;
+const float SENSITIVITY = 0.001f;
 const float ZOOM = 40.0f;
 
 class Camera
@@ -38,7 +40,9 @@ public:
     void ProcessKeyboard(Camera_Movement direction, float dt);
     void ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true);
     void ProcessMouseScroll(float yoffset);
-    void updateCameraVectors();
+    void updateCameraVectors(glm::vec3);
+    void yaw(Camera_Movement type, float dt);
+    void pitch(Camera_Movement type, float dt);
 private:
     glm::mat4 projection;
     glm::mat4 view;

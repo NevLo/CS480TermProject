@@ -17,12 +17,11 @@ using namespace std;
 #define numIBs 2;
 
 
-static class Graphics
+class Graphics
 {
 public:
     Graphics();
     ~Graphics();
-    bool m_hasTexture;
     bool anyProblem;
     bool Initialize(int width, int height);
     void Update(double dt);
@@ -30,6 +29,8 @@ public:
     void HierarchicalUpdate2(double dt);
     void Render();
     Camera* getCamera() { return m_camera; }
+    bool first;	float rs[64];
+    void addLights();
 private:
     std::string ErrorString(GLenum error);
     std::vector<Sphere*> spheres;
@@ -42,12 +43,16 @@ private:
 
     Camera* m_camera;
     Shader* m_shader;
-
+    glm::vec3 currentLightPos;
     GLint m_projectionMatrix;
     GLint m_viewMatrix;
     GLint m_modelMatrix;
     GLint m_positionAttrib;
     GLint m_colorAttrib;
+    GLint m_tcAttrib;
+    GLint m_hasTexture;
+    GLint m_normalMatrix;
+    GLint m_tfLoc;
 
     Sphere* m_sun;
     Sphere* m_mercury;
@@ -76,6 +81,18 @@ private:
     Sphere* m_comet_halleys;
     
     Mesh* m_rocket;
+    Sphere* m_skybox;
+    GLuint globalAmbLoc, ambLoc, diffLoc, specLoc, posLoc, mambLoc, mdiffLoc, mspecLoc, mshiLoc;
+    float globalAmbient[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+    float lightAmbient[4] = { .15f, .15f, .15f, .15f };
+    float lightDiffuse[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+    float lightSpecular[4] = { .20f, .15f, .10f, 1.0f };
+    float lightPos[3] = { 0.0, 0.0, 0.0 };
+
+    float matAmb[4] = { 3.20, 3.20, 3.20, 1.0 };
+    float matDif[4] = { 1.0, 1.0, 1.0, 1.0 };
+    float matSpe[4] = { 5.0, 5.0, 5.0, 1.0 };
+    float matShi = 2.0;
 
 };
 

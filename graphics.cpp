@@ -14,7 +14,9 @@ Graphics::~Graphics()
 
 bool Graphics::Initialize(int width, int height)
 {
-
+	for (int i = 0; i < sizeof(rs) / sizeof(float); i++) {
+		rs[i] = rand();
+	}
 	// Init Camera
 	m_camera = new Camera();
 	if (!m_camera->Initialize(width, height))
@@ -37,14 +39,14 @@ bool Graphics::Initialize(int width, int height)
 		printf("Vertex Shader failed to Initialize\n");
 		return false;
 	}
-
+	
 	// Add the fragment shader
 	if (!m_shader->AddShader(GL_FRAGMENT_SHADER))
 	{
 		printf("Fragment Shader failed to Initialize\n");
 		return false;
 	}
-
+	
 	// Connect the program
 	if (!m_shader->Finalize())
 	{
@@ -58,118 +60,31 @@ bool Graphics::Initialize(int width, int height)
 	}
 
 	// Create a sun
-	m_sun = new Sphere();
-	if (!m_sun->loadTexture("2k_sun", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}
-	m_mercury = new Sphere();
-	if (!m_mercury->loadTexture("Mercury", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}
-	m_venus = new Sphere();
-	if (!m_venus->loadTexture("Venus", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}
-	m_earth = new Sphere();
-	if (!m_earth->loadTexture("2k_earth_daymap", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}
-	m_earth_moon = new Sphere();
-	if (!m_earth_moon->loadTexture("2k_moon", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}
-	m_mars = new Sphere();
-	if (!m_mars->loadTexture("Mars", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}
-	m_mars_moon1 = new Sphere();
-	if (!m_mars_moon1->loadTexture("Ceres", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}//decide which is which if it matters, Ceres used as place-holder
-	m_mars_moon2 = new Sphere();
-	if (!m_mars_moon2->loadTexture("Ceres", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}
-	m_jupiter = new Sphere();
-	if (!m_jupiter->loadTexture("Jupiter", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}
-	m_jupiter_moon1 = new Sphere();
-	if (!m_jupiter_moon1->loadTexture("Ceres", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}
-	m_jupiter_moon2 = new Sphere();
-	if (!m_jupiter_moon2->loadTexture("Eris", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}
-	m_saturn = new Sphere();
-	if (!m_saturn->loadTexture("Saturn", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}
-	m_saturn_moon1 = new Sphere();
-	if (!m_saturn_moon1->loadTexture("Ceres", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}//this is the only Ceres that really belongs
-	m_saturn_moon2 = new Sphere();
-	if (!m_saturn_moon2->loadTexture("Ceres", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}
-	m_uranus = new Sphere();
-	if (!m_uranus->loadTexture("Uranus", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}
-	m_uranus_moon1 = new Sphere();
-	if (!m_uranus_moon1->loadTexture("Ceres", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}
-	m_uranus_moon2 = new Sphere();
-	if (!m_uranus_moon2->loadTexture("Ceres", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}
-	m_neptune = new Sphere();
-	if (!m_neptune->loadTexture("Neptune", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}
-	m_neptune_moon1 = new Sphere();
-	if (!m_neptune_moon1->loadTexture("Haumea", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}
-	m_neptune_moon2 = new Sphere();
-	if (!m_neptune_moon2->loadTexture("Ceres", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}
+	m_sun = new Sphere("../assets/2k_sun.jpg", "../assets/2k_sun.jpg");
 
-	m_comet_halleys = new Sphere();
-	if (!m_comet_halleys->loadTexture("Ceres", 0)) {
-		cout << "FAILED: couldnt open texture file\n";
-		exit(EXIT_FAILURE);
-	}
+	m_mercury = new Sphere("../assets/Mercury.jpg", "../assets/Mercury-n.jpg");
+	m_venus = new Sphere("../assets/Venus.jpg", "../assets/Venus-n.jpg");
+	m_earth = new Sphere("../assets/2k_earth_daymap.jpg", "../assets/2k_earth_daymap-n.jpg");
+	m_earth_moon = new Sphere("../assets/2k_moon.jpg", "../assets/2k_moon-n.jpg");
+	m_mars = new Sphere("../assets/Mars.jpg", "../assets/Mars-n.jpg");
+	m_mars_moon1 = new Sphere("../assets/Ceres.jpg", "../assets/Ceres-n.jpg"); //decide which is which if it matters, Ceres used as place-holder
+	m_mars_moon2 = new Sphere("../assets/Ceres.jpg", "../assets/Ceres-n.jpg");
+	m_jupiter = new Sphere("../assets/Jupiter.jpg", "../assets/Jupiter-n.jpg");
+	m_jupiter_moon1 = new Sphere("../assets/Ceres.jpg", "../assets/Ceres-n.jpg");
+	m_jupiter_moon2 = new Sphere("../assets/Eris.jpg", "../assets/Eris-n.jpg");
+	m_saturn = new Sphere("../assets/Saturn.jpg", "../assets/Saturn.jpg");
+	m_saturn_moon1 = new Sphere("../assets/Ceres.jpg", "../assets/Ceres-n.jpg");//this is the only Ceres that really belongs
+	m_saturn_moon2 = new Sphere("../assets/Ceres.jpg", "../assets/Ceres-n.jpg");
+	m_uranus = new Sphere("../assets/Uranus.jpg", "../assets/Uranus-n.jpg");
+	m_uranus_moon1 = new Sphere("../assets/Ceres.jpg", "../assets/Ceres-n.jpg");
+	m_uranus_moon2 = new Sphere("../assets/Ceres.jpg", "../assets/Ceres-n.jpg");
+	m_neptune = new Sphere("../assets/Neptune.jpg", "../assets/Neptune-n.jpg");
+	m_neptune_moon1 = new Sphere("../assets/Haumea.jpg", "../assets/Haumea-n.jpg");
+	m_comet_halleys = new Sphere("../assets/Ceres.jpg", "../assets/Ceres-n.jpg");
+	m_neptune_moon2 = new Sphere("../assets/Ceres.jpg", "../assets/Ceres-n.jpg");
 
-	m_hasTexture = m_shader->GetUniformLocation("hasTexture");
-	if (m_hasTexture == INVALID_UNIFORM_LOCATION) {
-		printf("hasTexture uniform not found\n");
-		anyProblem = false;
-		}
+	m_rocket = new Mesh(glm::vec3(0.0f, 0.0f, 0.0f), "../assets/SpaceShip-1.obj", "../assets/SpaceShip-1.png");
+	m_skybox = new Sphere("../assets/Galaxy.jpg", "../assets/Galaxy.jpg");
 
 	spheres.push_back(m_sun);
 	spheres.push_back(m_mercury);
@@ -195,17 +110,12 @@ bool Graphics::Initialize(int width, int height)
 	spheres.push_back(m_pluto_moon1);
 	spheres.push_back(m_pluto_moon2);
 	spheres.push_back(m_comet_halleys);
-
+	/*
 	for (int i = 0; i < 40; i++) {
-		spheres.push_back(new Sphere());
+		spheres.push_back(new Sphere("../assets/Ceres.jpg", "../assets/Ceres-n.jpg"));
 	}
 	std::cout << spheres.size() << "\n";
-
-	// Create the second cube;
-
-	//m_rocket = new Mesh(glm::vec3(2.0f, 3.0f, -5.0f));
-
-
+	*/
 	//enable depth testing
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
@@ -215,7 +125,7 @@ bool Graphics::Initialize(int width, int height)
 
 void Graphics::Update(double dt)
 {
-//update ship stuff
+	//getCamera()->updateCameraVectors();
 }
 
 
@@ -225,7 +135,8 @@ void Graphics::HierarchicalUpdate2(double dt){
 	std::vector<float> speed, dist, rotSpeed, scale;
 	glm::vec3 rotVector;
 	glm::mat4 localTransform; // position of the sun	
-	modelStack.push(glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0)));  // sun's coordinate
+	modelStack.push(glm::translate(glm::mat4(1.f), glm::vec3(0, 0, 0)));  // push sun's coordinate
+	modelStack.push(modelStack.top());
 	localTransform = modelStack.top();		// The sun origin
 	localTransform *= glm::rotate(glm::mat4(1.0f), (float)dt, glm::vec3(0.f, 1.f, 0.f));
 	localTransform *= glm::scale(glm::vec3(.75, .75, .75));
@@ -275,7 +186,7 @@ void Graphics::HierarchicalUpdate2(double dt){
 	modelStack.push(localTransform);			// store planet-sun coordinate
 	localTransform *= glm::rotate(glm::mat4(1.f), rotSpeed[0] * (float)dt, rotVector);
 	localTransform *= glm::scale(glm::vec3(scale[0], scale[1], scale[2]));
-	modelStack.push(localTransform);
+	modelStack.push(localTransform); // store rot planet - sun 
 	if (m_earth != NULL)
 		m_earth->Update(localTransform);
 	speed = { 1, 1, 1 };
@@ -293,6 +204,7 @@ void Graphics::HierarchicalUpdate2(double dt){
 		m_earth_moon->Update(localTransform);
 	modelStack.pop(); //pop to planet-sun
 	modelStack.pop(); //pop to sun
+	modelStack.pop();
 	//position of mars
 	speed = { 0.5, 0.5, 0.5 };
 	dist = { 20, 0, 20. };
@@ -337,6 +249,7 @@ void Graphics::HierarchicalUpdate2(double dt){
 		m_mars_moon2->Update(localTransform);
 
 	modelStack.pop();
+
 	modelStack.pop();
 	//position of jupiter
 	speed = { 0.08, 0.08, 0.08 };
@@ -382,6 +295,7 @@ void Graphics::HierarchicalUpdate2(double dt){
 
 	if (m_jupiter_moon2 != NULL)
 		m_jupiter_moon2->Update(localTransform);
+
 	modelStack.pop();
 	modelStack.pop();
 	//position of saturn
@@ -427,6 +341,7 @@ void Graphics::HierarchicalUpdate2(double dt){
 
 	if (m_saturn_moon2 != NULL)
 		m_saturn_moon2->Update(localTransform);
+
 	modelStack.pop();
 	modelStack.pop();
 	//position of uranus
@@ -473,6 +388,7 @@ void Graphics::HierarchicalUpdate2(double dt){
 
 	if (m_uranus_moon2 != NULL)
 		m_uranus_moon2->Update(localTransform);
+
 	modelStack.pop();
 	modelStack.pop();
 	//position of neptune
@@ -585,14 +501,16 @@ void Graphics::HierarchicalUpdate2(double dt){
 	modelStack.pop();
  	// back to the planet coordinate
 	modelStack.pop();
+	//srand(50);
+	/*
 	for (int i = 24; i < 44; i++) {
 		// t = b1 + ((s-a1)(b2-b1))/(a2-a1)
-
-		float r = -0.01 + ((rand()) * (0.02)) / (1);
-		speed = { 1.f + r, 1.f + r, 1.f + r };
+		
+		float r  = -0.01 + ((rs[i]) * (0.02)) / (1);
+		speed = { 0.01f + r, 0.01f + r, 0.01f + r };
 		dist = { 22, 0, 22. };
-		rotVector = { 1.f + r,0.,1.f + r };
-		rotSpeed = { .5, 0, .5 };
+		rotVector = { .01f + r,0.,.01f + r };
+		rotSpeed = { .005, 0, .005 };
 		scale = { .27f, .27f, .27f };
 		localTransform = modelStack.top();
 		localTransform *= glm::translate(glm::mat4(1.f),
@@ -603,9 +521,13 @@ void Graphics::HierarchicalUpdate2(double dt){
 		spheres[i]->Update(localTransform);
 		modelStack.pop();
 	}
+	//srand(100);
+
 	for (int i = 44; i < spheres.size(); i++) {
-		float r = -0.01 + ((rand()) * (0.02)) / (1);
-		speed = { 1.f+r, 1.f + r, 1.f + r };
+		float r;
+		
+		r = -0.01 + ((rs[i]) * (0.02)) / (1);
+		speed = { 0.01f+r, 0.01f + r, 0.01f + r };
 		dist = { 47, 0, 47. };
 		rotVector = { 1 + r,0.,1 + r };
 		rotSpeed = { .5, 0, .5 };
@@ -619,16 +541,26 @@ void Graphics::HierarchicalUpdate2(double dt){
 		spheres[i]->Update(localTransform);
 		modelStack.pop();
 	}
-
+	*/
 
 	 	// back to the sun coordinate
 	// empy stack
 
-	
-	localTransform = glm::translate(getCamera()->Position);
-	localTransform *= glm::translate(getCamera()->Front);
-	localTransform *= glm::scale(glm::vec3(0.75f));
-	//m_rocket->Update(localTransform);
+	/*
+	localTransform = glm::translate(glm::mat4(1.f),glm::vec3(getCamera()->Position + getCamera()->Front));
+
+	localTransform *= glm::inverse(glm::lookAt(glm::vec3(0,0,0), -getCamera()->Front, glm::vec3(0, 1, 0)));
+	localTransform *= glm::scale(glm::vec3(0.2, 0.2, 0.2));
+	m_rocket->Update(localTransform);
+	*/
+	localTransform = glm::translate(glm::mat4(1.f), m_camera->Position);
+	localTransform *= glm::scale(glm::vec3(0.005, 0.005, 0.005));
+	localTransform *= glm::translate(glm::mat4(1.f), glm::vec3(0.0, -25.0, -40.0));
+	if (m_rocket != NULL)
+		m_rocket->Update(localTransform);
+	if (first) {
+		first = !first;
+	}
 }
 
 
@@ -640,11 +572,38 @@ void Graphics::ComputeTransforms(double dt, std::vector<float> speed, std::vecto
 	rmat = glm::rotate(glm::mat4(1.f), rotSpeed[0] * (float)dt, rotVector);
 	smat = glm::scale(glm::vec3(scale[0], scale[1], scale[2]));
 }
+void Graphics::addLights() {
+	currentLightPos = glm::vec3(0.0, 0.0, 0.0);
+	glm::vec3 transformed = glm::vec3(m_camera->GetView() * glm::vec4(currentLightPos, 1.0));
+	lightPos[0] = transformed.x;
+	lightPos[1] = transformed.y;
+	lightPos[2] = transformed.z;
 
+	globalAmbLoc = glGetUniformLocation(m_shader->m_shaderProg, "globalAmbient");
+	ambLoc = glGetUniformLocation(m_shader->m_shaderProg, "light.ambient");
+	diffLoc = glGetUniformLocation(m_shader->m_shaderProg, "light.diffuse");
+	specLoc = glGetUniformLocation(m_shader->m_shaderProg, "light.specular");
+	posLoc = glGetUniformLocation(m_shader->m_shaderProg, "light.position");
+	mambLoc = glGetUniformLocation(m_shader->m_shaderProg, "material.ambient");
+	mdiffLoc = glGetUniformLocation(m_shader->m_shaderProg, "material.diffuse");
+	mspecLoc = glGetUniformLocation(m_shader->m_shaderProg, "material.specular");
+	mshiLoc = glGetUniformLocation(m_shader->m_shaderProg, "material.shininess");
+
+
+	glProgramUniform4fv(m_shader->m_shaderProg, globalAmbLoc, 1, globalAmbient);
+	glProgramUniform4fv(m_shader->m_shaderProg, ambLoc, 1, lightAmbient);
+	glProgramUniform4fv(m_shader->m_shaderProg, diffLoc, 1, lightDiffuse);
+	glProgramUniform4fv(m_shader->m_shaderProg, specLoc, 1, lightSpecular);
+	glProgramUniform3fv(m_shader->m_shaderProg, posLoc, 1, lightPos);
+	glProgramUniform4fv(m_shader->m_shaderProg, mambLoc, 1, matAmb);
+	glProgramUniform4fv(m_shader->m_shaderProg, mdiffLoc, 1, matDif);
+	glProgramUniform4fv(m_shader->m_shaderProg, mspecLoc, 1, matSpe);
+	glProgramUniform1f(m_shader->m_shaderProg, mshiLoc, matShi);
+}
 void Graphics::Render()
 {
 	//clear the screen
-	glClearColor(0.5, 0.2, 0.2, 1.0);
+	glClearColor(0.0, 0.0, 0.0, 1.0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Start the correct program
@@ -654,13 +613,70 @@ void Graphics::Render()
 	glUniformMatrix4fv(m_projectionMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetProjection()));
 	glUniformMatrix4fv(m_viewMatrix, 1, GL_FALSE, glm::value_ptr(m_camera->GetView()));
 
+	addLights();
+
 	// Render the objects
 	for (Sphere* s : spheres) {
-		if (s != NULL) {
+		if (s == NULL) return;
+		GLuint hasNormal = m_shader->GetUniformLocation("hasNormalMap");
+		if (s->hasTexture) {
 			glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(s->GetModel()));
-			s->Render(m_positionAttrib, m_colorAttrib * 2);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, s->getTextureID(false));
+			GLuint sampler = m_shader->GetUniformLocation("samp0");
+			if (sampler == INVALID_UNIFORM_LOCATION)
+			{
+				printf("Sampler Not found not found\n");
+			}
+			glUniform1i(sampler, 0);
+			s->Render(m_positionAttrib, m_colorAttrib, m_tcAttrib, m_hasTexture);
+		}
+		glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(s->GetModel()));
+		if (s->hasTexture) {
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, s->getTextureID(true));
+			GLuint sampler = m_shader->GetUniformLocation("samp1");
+			if (sampler == INVALID_UNIFORM_LOCATION)
+			{
+				printf("Sampler Not found not found\n");
+			}
+			glUniform1i(sampler, 1);
+			glUniform1i(hasNormal, true);
+			s->Render(m_positionAttrib, m_colorAttrib, m_tcAttrib, m_hasTexture);
 		}
 	}
+	if (m_rocket != NULL) {
+		glUniform1i(m_hasTexture, false);
+		glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(m_rocket->GetModel()));
+		if (m_rocket->hasTex) {
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, m_rocket->getTextureID());
+			GLuint sampler = m_shader->GetUniformLocation("samp0");
+			if (sampler == INVALID_UNIFORM_LOCATION)
+			{
+				printf("Sampler Not found not found\n");
+			}
+			glUniform1i(sampler, 0);
+			m_rocket->Render(m_positionAttrib, m_colorAttrib, m_tcAttrib, m_hasTexture);
+		}
+	}/*
+	if (m_skybox != NULL) {
+		GLuint hasN = m_shader->GetUniformLocation("hasNormalMap");
+		glUniformMatrix4fv(m_modelMatrix, 1, GL_FALSE, glm::value_ptr(m_skybox->GetModel()));
+		if (m_skybox->hasTexture) {
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, m_skybox->m_textureID);
+			GLuint sampler = m_shader->GetUniformLocation("samp0");
+			if (sampler == INVALID_UNIFORM_LOCATION)
+			{
+				printf("Sampler Not found not found\n");
+			}
+			glUniform1i(sampler, 0);
+			glUniform1i(hasN, false);
+			m_skybox->Render(m_positionAttrib, m_colorAttrib, m_tcAttrib, m_hasTexture);
+		}
+	}
+	*/
 	// Get any errors from OpenGL
 	auto error = glGetError();
 	if (error != GL_NO_ERROR)
@@ -669,6 +685,7 @@ void Graphics::Render()
 		std::cout << "Error initializing OpenGL! " << error << ", " << val << std::endl;
 	}
 }
+
 
 
 bool Graphics::collectShPrLocs() {

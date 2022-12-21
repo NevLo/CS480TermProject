@@ -24,10 +24,10 @@ bool Camera::Initialize(int w, int h)
     Zoom = ZOOM;
     MovementSpeed = SPEED;
 
-    view = glm::lookAt(Position, //Eye Position
+    view = glm::lookAt(glm::vec3(0), //Eye Position
         glm::vec3(0.0, 0.0, 0.0), //Focus point
         WorldUp); //Positive Y is up
-    updateCameraVectors();
+    //updateCameraVectors();
 
 
 
@@ -40,12 +40,15 @@ bool Camera::Initialize(int w, int h)
 
 glm::mat4 Camera::GetProjection()
 {
-    return glm::perspective(Zoom, float(1200) / float(1000), 0.01f, 100.0f);
+    return  glm::perspective(Zoom, //the FoV typically 90 degrees is good which is what this is set to
+        float(1200) / float(1000), //Aspect Ratio, so Circles stay Circular
+        0.01f, //Distance to the near plane, normally a small value like this
+        100.0f); //Distance to the far plane, 
 }
 
 glm::mat4 Camera::GetView()
 {
-    return glm::lookAt(Position, Position + Front, Up);;
+    return glm::lookAt(Position, Position + Front, Up);
 }
 
 void Camera::Update(glm::vec3 speed)
@@ -55,19 +58,31 @@ void Camera::Update(glm::vec3 speed)
     //view = glm::translate(view, speed);
 
 }
+
 void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
 {
     float velocity = MovementSpeed * deltaTime;
     if (direction == FORWARD)
-        Position += Front * velocity;
+        pitch(direction, deltaTime);
     if (direction == BACKWARD)
-        Position -= Front * velocity;
+        pitch(direction, deltaTime);
     if (direction == LEFT)
-        Position -= Right * velocity;
+        yaw(direction, deltaTime);
     if (direction == RIGHT)
-        Position += Right * velocity;
+        yaw(direction, deltaTime);
+    if (direction == FASTER)
+        Position += Front * velocity;
+    if (direction == SLOWER) {
+        Position -= Front * velocity;
+    }
 }
-
+void Camera::yaw(Camera_Movement type, float dt) {
+    Yaw = type == LEFT ? Yaw + dt * 0.5: Yaw - dt * 0.5;
+    
+}
+void Camera::pitch(Camera_Movement type, float dt) {
+    Pitch = type == FORWARD ? Pitch + dt * MovementSpeed : Pitch - dt * MovementSpeed;
+}
 void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch)
 {
 
@@ -87,7 +102,7 @@ void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constr
     }
 
     // update Front, Right and Up Vectors using the updated Euler angles
-    updateCameraVectors();
+    //updateCameraVectors();
 
 }
 void Camera::ProcessMouseScroll(float yoffset)
@@ -98,14 +113,13 @@ void Camera::ProcessMouseScroll(float yoffset)
     if (Zoom > 45.0f)
         Zoom = 45.0f;
 }
-void Camera::updateCameraVectors()
+void Camera::updateCameraVectors(glm::vec3 camUpdate)
 {
     // calculate the new Front vector
     glm::vec3 front;
-    front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-    front.y = sin(glm::radians(Pitch));
-    front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
+    front = camUpdate;
     Front = glm::normalize(front);
+    view = glm::lookAt(Position, Front + Position, Up);
     // also re-calculate the Right and Up vector
     Right = glm::normalize(glm::cross(Front, WorldUp));  // normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
     Up = glm::normalize(glm::cross(Right, Front));

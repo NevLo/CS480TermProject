@@ -1,18 +1,18 @@
 
 #include "engine.h"
-static Engine* e;
-Graphics* Engine::m_graphics = new Graphics();
+bool firstMouse = true;
+float yaw = -90.0f;
+float pitch = 0.0f;
+float lastX = 1200.0f / 2.0;
+float lastY = 1000.0 / 2.0;
+float fov = 45.0f;
 
 Engine::Engine(const char* name, int width, int height)
 {
     m_WINDOW_NAME = name;
     m_WINDOW_WIDTH = width;
     m_WINDOW_HEIGHT = height;
-    lastX = 1200/2;
-    lastY = 1000/2;
-    firstMouse = true;
-    e = this;
-    //m_graphics->Initialize(m_WINDOW_WIDTH,m_WINDOW_HEIGHT);
+ 
 }
 
 
@@ -94,47 +94,73 @@ void Engine::Display(GLFWwindow* window, double time) {
     m_graphics->HierarchicalUpdate2(time);
 }
 
-void Engine::cursorPositionCallBack(GLFWwindow* window, double xposIn, double yposIn) {
+void cursorPositionCallBack(GLFWwindow* window, double xposIn, double yposIn) {
      float xpos = static_cast<float>(xposIn);
      float ypos = static_cast<float>(yposIn);
 
-     if (e->firstMouse)
-     {
-         e->lastX = xpos;
-         e->lastY = ypos;
-         e->firstMouse = false;
-     }
-
-     float xoffset = xpos - e->lastX;
-     float yoffset = e->lastY - ypos; // reversed since y-coordinates go from bottom to top
-
-     e->lastX = xpos;
-     e->lastY = ypos;
-
-    e->m_graphics->getCamera()->ProcessMouseMovement(xposIn, yposIn);
+    //e->m_graphics->getCamera()->ProcessMouseMovement(xposIn, yposIn);
 }
- void Engine::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
  {
-    e->m_graphics->getCamera()->ProcessMouseScroll(static_cast<float>(yoffset));
+     fov -= (float)yoffset;
+     if (fov < 1.0f)
+         fov = 1.0f;
+     if (fov > 45.0f)
+         fov = 45.0f;
  }
 
-void Engine::ProcessInput()
-{
-    //key input that moves triangle
-    if (glfwGetKey(m_window->getWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(m_window->getWindow(), true);
+ void Engine::ProcessInput()
+ {
+     //key input that moves triangle
+     if (glfwGetKey(m_window->getWindow(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
+         glfwSetWindowShouldClose(m_window->getWindow(), true);
+     double xpos;
+     double ypos;
+     glfwSetInputMode(m_window->getWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+     glfwGetCursorPos(m_window->getWindow(), &xpos, &ypos);
 
-    if (glfwGetKey(m_window->getWindow(), GLFW_KEY_W) == GLFW_RELEASE &&
-        glfwGetKey(m_window->getWindow(), GLFW_KEY_S) == GLFW_RELEASE &&
-        glfwGetKey(m_window->getWindow(), GLFW_KEY_A) == GLFW_RELEASE &&
-        glfwGetKey(m_window->getWindow(), GLFW_KEY_D) == GLFW_RELEASE)
-        m_graphics->getCamera()->Update(glm::vec3(0., 0., 0.));
-    if (glfwGetKey(m_window->getWindow(), GLFW_KEY_S) == GLFW_PRESS)
-        m_graphics->getCamera()->ProcessKeyboard(BACKWARD, getDT());
-    if (glfwGetKey(m_window->getWindow(), GLFW_KEY_W) == GLFW_PRESS)
-        m_graphics->getCamera()->ProcessKeyboard(FORWARD, getDT());
-    if (glfwGetKey(m_window->getWindow(), GLFW_KEY_A) == GLFW_PRESS)
-        m_graphics->getCamera()->ProcessKeyboard(LEFT, getDT());
-    if (glfwGetKey(m_window->getWindow(), GLFW_KEY_D) == GLFW_PRESS)
-        m_graphics->getCamera()->ProcessKeyboard(RIGHT, getDT());
+     float xoffset = xpos - lastX;
+     float yoffset = lastY - ypos; // reversed since y-coordinates range from bottom to top
+     lastX = xpos;
+     lastY = ypos;
+
+     const float sensitivity = 0.1f;
+     xoffset *= sensitivity;
+     yoffset *= sensitivity;
+     yaw += xoffset;
+     pitch += yoffset;
+
+     // make sure that when pitch is out of bounds, screen doesn't get flipped
+     if (pitch > 89.0f)
+         pitch = 89.0f;
+     if (pitch < -89.0f)
+         pitch = -89.0f;
+
+     glm::vec3 front;
+     front.x = cos(glm::radians(yaw)) * cos(glm::radians(pitch));
+     front.y = sin(glm::radians(pitch));
+     front.z = sin(glm::radians(yaw)) * cos(glm::radians(pitch));
+     glm::vec3 cameraFront = glm::normalize(front);
+
+     m_graphics->getCamera()->updateCameraVectors(cameraFront);
+     m_graphics->getCamera()->Zoom = fov;
+
+     if (glfwGetKey(m_window->getWindow(), GLFW_KEY_W) == GLFW_RELEASE &&
+         glfwGetKey(m_window->getWindow(), GLFW_KEY_S) == GLFW_RELEASE &&
+         glfwGetKey(m_window->getWindow(), GLFW_KEY_A) == GLFW_RELEASE &&
+         glfwGetKey(m_window->getWindow(), GLFW_KEY_D) == GLFW_RELEASE)
+         m_graphics->getCamera()->Update(glm::vec3(0., 0., 0.));
+     if (glfwGetKey(m_window->getWindow(), GLFW_KEY_S) == GLFW_PRESS)
+         m_graphics->getCamera()->ProcessKeyboard(BACKWARD, getDT());
+     if (glfwGetKey(m_window->getWindow(), GLFW_KEY_W) == GLFW_PRESS)
+         m_graphics->getCamera()->ProcessKeyboard(FORWARD, getDT());
+     if (glfwGetKey(m_window->getWindow(), GLFW_KEY_A) == GLFW_PRESS)
+         m_graphics->getCamera()->ProcessKeyboard(LEFT, getDT());
+     if (glfwGetKey(m_window->getWindow(), GLFW_KEY_D) == GLFW_PRESS)
+         m_graphics->getCamera()->ProcessKeyboard(RIGHT, getDT());
+     if (glfwGetKey(m_window->getWindow(), GLFW_KEY_Q) == GLFW_PRESS)
+         m_graphics->getCamera()->ProcessKeyboard(FASTER, getDT());
+     if (glfwGetKey(m_window->getWindow(), GLFW_KEY_E) == GLFW_PRESS)
+         m_graphics->getCamera()->ProcessKeyboard(SLOWER, getDT());
+ 
 }

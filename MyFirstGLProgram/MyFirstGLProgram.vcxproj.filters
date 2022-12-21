@@ -35,16 +35,13 @@
     <ClInclude Include="..\shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\cube.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\pyramid.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="sphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -70,17 +67,106 @@
     <ClCompile Include="..\window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\cube.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\pyramid.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="sphere.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\assets\2k_earth_daymap.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\2k_earth_daymap-n.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\2k_moon.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\2k_moon-n.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\2k_sun.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Ceres.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Ceres-n.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Eris.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Eris-n.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Galaxy.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Galaxy2.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Galaxy-cubemap1.png">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Galaxy-cubemap2.png">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Haumea.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Haumea-n.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Jupiter.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Jupiter-n.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Mars.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Mars-n.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Material_1360.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Mercury.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Mercury-n.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Neptune.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Neptune-n.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Saturn.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\SpaceShip-1.png">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Uranus.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Uranus-n.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Venus.jpg">
+      <Filter>Resources</Filter>
+    </Image>
+    <Image Include="..\assets\Venus-n.jpg">
+      <Filter>Resources</Filter>
+    </Image>
   </ItemGroup>
 </Project>

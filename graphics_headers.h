@@ -23,9 +23,9 @@
 struct Vertex
 {
   glm::vec3 vertex;
-  glm::vec3 color;
-
-  Vertex(glm::vec3 v, glm::vec3 c): vertex(v), color(c) {}
+  glm::vec3 normal;
+  glm::vec2 texcoord;
+  Vertex(glm::vec3 v, glm::vec3 n, glm::vec2 tc) : vertex(v), normal(n), texcoord(tc) {}
 };
 
 #endif /* GRAPHICS_HEADERS_H */

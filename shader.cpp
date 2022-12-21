@@ -39,38 +39,107 @@ bool Shader::AddShader(GLenum ShaderType)
 
   if(ShaderType == GL_VERTEX_SHADER)
   {
-    s = "#version 460\n \
+      s = "#version 460\n \
           \
           layout (location = 0) in vec3 v_position; \
           layout (location = 1) in vec3 v_color; \
-          \
-          smooth layout (location = 2) out vec3 color; \
-          \
+          layout (location = 2) in vec2 v_tc;  \
+           \
+          out vec3 varNorm; \
+          out vec3 varLdir; \
+          out vec3 varPos; \
+          out vec2 tc; \
+            \
+          struct PositionalLight{\
+            vec4 ambient;\
+            vec4 diffuse;\
+            vec4 spec;\
+            vec3 position;\
+           };\
+          struct Material{\
+            vec4 ambient;\
+            vec4 diffuse;\
+            vec4 spec;\
+            float shininess;\
+           };\
+           \
+          layout (binding=0) uniform sampler2D samp0;\
+          layout (binding = 1) uniform sampler2D samp1;\
+            \
+          uniform vec4 GlobalAmbient; \
+          uniform PositionalLight light; \
+          uniform Material material; \
           uniform mat4 projectionMatrix; \
           uniform mat4 viewMatrix; \
           uniform mat4 modelMatrix; \
-          \
+          uniform mat3 normMatrix; \
+           \
           void main(void) \
           { \
             vec4 v = vec4(v_position, 1.0); \
             gl_Position = (projectionMatrix * viewMatrix * modelMatrix) * v; \
-            color = v_color; \
+            tc = v_tc; \
+            varPos = (viewMatrix * modelMatrix * vec4(v_position, 1.0f)).xyz; \
+            varLdir = light.position-varPos;\
+            varNorm = normMatrix*v_color;\
           } \
           ";
   }
-  else if(ShaderType == GL_FRAGMENT_SHADER)
+  else if (ShaderType == GL_FRAGMENT_SHADER)
   {
-    s = "#version 460\n \
-          \
-          smooth layout (location = 2) in vec3 color; \
-          \
+      std::cout << "ag1" << "\n";
+      s = "#version 460\n \
+          in vec3 varNorm; \
+          in vec3 varLdir; \
+          in vec3 varPos; \
+          in vec2 tc; \
           out vec4 frag_color; \
+            \
+            layout (binding=0) uniform sampler2D samp0;\
+            layout (binding = 1) uniform sampler2D samp1;\
+            \
+          struct PositionalLight{\
+            vec4 ambient;\
+            vec4 diffuse;\
+            vec4 spec;\
+            vec3 position;\
+           };\
+          struct Material{\
+            vec4 ambient;\
+            vec4 diffuse;\
+            vec4 spec;\
+            float shininess;\
+           };\
+           \
+          uniform vec4 GlobalAmbient; \
+          uniform PositionalLight light; \
+          uniform Material material; \
+          uniform mat4 projectionMatrix; \
+          uniform mat4 viewMatrix; \
+          uniform mat4 modelMatrix; \
+          uniform mat3 normMatrix; \
+          uniform bool hasNormalMap; \
           \
-          void main(void) \
-          { \
-             frag_color = vec4(color.rgb, 1.0); \
+           \
+            void main(void) \
+            { \
+            vec3 L = normalize(varLdir); \
+            vec3 N;\
+            if (hasNormalMap) \
+                N = normalize(varNorm + texture(samp1, tc).xyz * 2 - 1); \
+            else \
+                N = normalize(varNorm); \
+            vec3 V = normalize(-varPos); \
+            vec3 R = normalize(reflect(-L, N)); \
+            float cosTheta = dot(L,N); \
+            float cosPhi = dot(R,V); \
+            vec3 amb = ((GlobalAmbient) + (texture(samp0,tc)*light.ambient * material.ambient)/1).xyz;\
+            vec3 dif = light.diffuse.xyz * material.diffuse.xyz * texture(samp0,tc).xyz * max(0.0, cosTheta); \
+            vec3 spc = light.spec.xyz * material.spec.xyz * pow(max(0.0,cosPhi), material.shininess); \
+            frag_color = vec4(amb+dif+spc,1);\
           } \
           ";
+      std::cout << "ag2" << "\n";
   }
 
   GLuint ShaderObj = glCreateShader(ShaderType);
