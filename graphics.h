@@ -16,7 +16,7 @@ using namespace std;
 #define numIBs 2;
 
 
-class Graphics
+static class Graphics
 {
 public:
     Graphics();

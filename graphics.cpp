@@ -111,11 +111,11 @@ bool Graphics::Initialize(int width, int height)
 	for (int i = 0; i < 40; i++) {
 		spheres.push_back(new Sphere("Ceres"));
 	}
-
+	std::cout << spheres.size() << "\n";
 
 	// Create the second cube;
 
-	m_rocket = new Mesh(glm::vec3(2.0f, 3.0f, -5.0f));
+	//m_rocket = new Mesh(glm::vec3(2.0f, 3.0f, -5.0f));
 
 
 	//enable depth testing
@@ -132,7 +132,7 @@ void Graphics::Update(double dt)
 
 
 
-void Graphics::HierarchicalUpdate2(double dt) {
+void Graphics::HierarchicalUpdate2(double dt){
 	//update planet stuff.
 	std::vector<float> speed, dist, rotSpeed, scale;
 	glm::vec3 rotVector;
@@ -158,7 +158,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	localTransform *= glm::scale(glm::vec3(scale[0], scale[1], scale[2]));
 	if (m_mercury != NULL)
 		m_mercury->Update(localTransform);
-	modelStack.pop();
+	modelStack.pop(); //pop - planet
 
 	// position of venus
 	speed = { .6, .6, .6 };
@@ -169,7 +169,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	localTransform = modelStack.top();
 	localTransform *= glm::translate(glm::mat4(1.f),
 		glm::vec3(cos(speed[0] * dt) * dist[0], sin(speed[1] * dt) * dist[1], sin(speed[2] * dt) * dist[2]));
-	modelStack.push(localTransform);			// store moon-planet-sun coordinate
+	modelStack.push(localTransform);			// store planet-sun coordinate
 	localTransform *= glm::rotate(glm::mat4(1.f), rotSpeed[0] * (float)dt, rotVector);
 	localTransform *= glm::scale(glm::vec3(scale[0], scale[1], scale[2]));
 	if (m_venus != NULL)
@@ -184,7 +184,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	localTransform = modelStack.top();
 	localTransform *= glm::translate(glm::mat4(1.f),
 		glm::vec3(cos(speed[0] * dt) * dist[0], sin(speed[1] * dt) * dist[1], sin(speed[2] * dt) * dist[2]));
-	modelStack.push(localTransform);			// store moon-planet-sun coordinate
+	modelStack.push(localTransform);			// store planet-sun coordinate
 	localTransform *= glm::rotate(glm::mat4(1.f), rotSpeed[0] * (float)dt, rotVector);
 	localTransform *= glm::scale(glm::vec3(scale[0], scale[1], scale[2]));
 	modelStack.push(localTransform);
@@ -201,12 +201,10 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(localTransform);			// store moon-planet-sun coordinate
 	localTransform *= glm::rotate(glm::mat4(1.f), rotSpeed[0] * (float)dt, rotVector);
 	localTransform *= glm::scale(glm::vec3(scale[0], scale[1], scale[2]));
-
 	if (m_earth_moon != NULL)
 		m_earth_moon->Update(localTransform);
-	modelStack.pop();
-	modelStack.pop();
-	modelStack.pop();
+	modelStack.pop(); //pop to planet-sun
+	modelStack.pop(); //pop to sun
 	//position of mars
 	speed = { 0.5, 0.5, 0.5 };
 	dist = { 20, 0, 20. };
@@ -216,10 +214,9 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	localTransform = modelStack.top();
 	localTransform *= glm::translate(glm::mat4(1.f),
 		glm::vec3(cos(speed[0] * dt) * dist[0], sin(speed[1] * dt) * dist[1], sin(speed[2] * dt) * dist[2]));
-	modelStack.push(localTransform);			// store moon-planet-sun coordinate
+	modelStack.push(localTransform);			// store planet-sun coordinate
 	localTransform *= glm::rotate(glm::mat4(1.f), rotSpeed[0] * (float)dt, rotVector);
 	localTransform *= glm::scale(glm::vec3(scale[0], scale[1], scale[2]));
-	modelStack.push(localTransform);
 	if (m_mars != NULL)
 		m_mars->Update(localTransform);
 	speed = { 1, 1, 1 };
@@ -233,7 +230,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(localTransform);			// store moon-planet-sun coordinate
 	localTransform *= glm::rotate(glm::mat4(1.f), rotSpeed[0] * (float)dt, rotVector);
 	localTransform *= glm::scale(glm::vec3(scale[0], scale[1], scale[2]));
-
+	modelStack.pop();
 	if (m_mars_moon1 != NULL)
 		m_mars_moon1->Update(localTransform);
 	speed = { 1, 1, 1 };
@@ -250,7 +247,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 
 	if (m_mars_moon2 != NULL)
 		m_mars_moon2->Update(localTransform);
-	modelStack.pop();
+
 	modelStack.pop();
 	modelStack.pop();
 	//position of jupiter
@@ -265,7 +262,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(localTransform);			// store moon-planet-sun coordinate
 	localTransform *= glm::rotate(glm::mat4(1.f), rotSpeed[0] * (float)dt, rotVector);
 	localTransform *= glm::scale(glm::vec3(scale[0], scale[1], scale[2]));
-	modelStack.push(localTransform);
+
 	if (m_jupiter != NULL)
 		m_jupiter->Update(localTransform);
 	speed = { 1, 1, 1 };
@@ -282,6 +279,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 
 	if (m_jupiter_moon1 != NULL)
 		m_jupiter_moon1->Update(localTransform);
+	modelStack.pop();
 	speed = { 1, 1, 1 };
 	dist = { 1, 0, 1. };
 	rotVector = { 1.,0.,1. };
@@ -298,7 +296,6 @@ void Graphics::HierarchicalUpdate2(double dt) {
 		m_jupiter_moon2->Update(localTransform);
 	modelStack.pop();
 	modelStack.pop();
-	modelStack.pop();
 	//position of saturn
 	speed = { 0.03, 0.03, 0.03 };
 	dist = { 30, 0, 30. };
@@ -311,7 +308,6 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(localTransform);			// store moon-planet-sun coordinate
 	localTransform *= glm::rotate(glm::mat4(1.f), rotSpeed[0] * (float)dt, rotVector);
 	localTransform *= glm::scale(glm::vec3(scale[0], scale[1], scale[2]));
-	modelStack.push(localTransform);
 	if (m_saturn != NULL)
 		m_saturn->Update(localTransform);
 	speed = { 1, 1, 1 };
@@ -328,6 +324,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 
 	if (m_saturn_moon1 != NULL)
 		m_saturn_moon1->Update(localTransform);
+	modelStack.pop();
 	speed = { 1, 1, 1 };
 	dist = { 1, 0, 1. };
 	rotVector = { 1.,0.,1. };
@@ -344,7 +341,6 @@ void Graphics::HierarchicalUpdate2(double dt) {
 		m_saturn_moon2->Update(localTransform);
 	modelStack.pop();
 	modelStack.pop();
-	modelStack.pop();
 	//position of uranus
 	speed = { 0.011, 0.011, 0.011 };
 	dist = { 35, 0, 35. };
@@ -357,7 +353,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(localTransform);			// store moon-planet-sun coordinate
 	localTransform *= glm::rotate(glm::mat4(1.f), rotSpeed[0] * (float)dt, rotVector);
 	localTransform *= glm::scale(glm::vec3(scale[0], scale[1], scale[2]));
-	modelStack.push(localTransform);
+
 	if (m_uranus != NULL)
 		m_uranus->Update(localTransform);
 	speed = { 1, 1, 1 };
@@ -374,6 +370,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 
 	if (m_uranus_moon1 != NULL)
 		m_uranus_moon1->Update(localTransform);
+	modelStack.pop();
 	speed = { 1, 1, 1 };
 	dist = { 1, 0, 1. };
 	rotVector = { 1.,0.,1. };
@@ -390,7 +387,6 @@ void Graphics::HierarchicalUpdate2(double dt) {
 		m_uranus_moon2->Update(localTransform);
 	modelStack.pop();
 	modelStack.pop();
-	modelStack.pop();
 	//position of neptune
 	speed = { 0.006, 0.006, 0.006 };
 	dist = { 40, 0, 40. };
@@ -403,7 +399,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(localTransform);			// store moon-planet-sun coordinate
 	localTransform *= glm::rotate(glm::mat4(1.f), rotSpeed[0] * (float)dt, rotVector);
 	localTransform *= glm::scale(glm::vec3(scale[0], scale[1], scale[2]));
-	modelStack.push(localTransform);
+
 	if (m_neptune != NULL)
 		m_neptune->Update(localTransform);
 	speed = { 1, 1, 1 };
@@ -420,6 +416,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 
 	if (m_neptune_moon1 != NULL)
 		m_neptune_moon1->Update(localTransform);
+	modelStack.pop();
 	speed = { 1, 1, 1 };
 	dist = { 1, 0, 1. };
 	rotVector = { 1.,0.,1. };
@@ -436,7 +433,6 @@ void Graphics::HierarchicalUpdate2(double dt) {
 		m_neptune_moon2->Update(localTransform);
 	modelStack.pop();
 	modelStack.pop();
-	modelStack.pop();
 	//position of pluto
 	speed = { 0.003, 0.003, 0.003 };
 	dist = { 45, 0, 45. };
@@ -449,7 +445,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	modelStack.push(localTransform);			// store moon-planet-sun coordinate
 	localTransform *= glm::rotate(glm::mat4(1.f), rotSpeed[0] * (float)dt, rotVector);
 	localTransform *= glm::scale(glm::vec3(scale[0], scale[1], scale[2]));
-	modelStack.push(localTransform);
+
 	if (m_pluto != NULL)
 		m_pluto->Update(localTransform);
 	speed = { 1, 1, 1 };
@@ -466,6 +462,7 @@ void Graphics::HierarchicalUpdate2(double dt) {
 
 	if (m_pluto_moon1 != NULL)
 		m_pluto_moon1->Update(localTransform);
+	modelStack.pop();
 	speed = { 1, 1, 1 };
 	dist = { 1, 0, 1. };
 	rotVector = { 1.,0.,1. };
@@ -480,7 +477,6 @@ void Graphics::HierarchicalUpdate2(double dt) {
 
 	if (m_pluto_moon2 != NULL)
 		m_pluto_moon2->Update(localTransform);
-	modelStack.pop();
 	modelStack.pop();
 	modelStack.pop();
 	//Halleys comet
@@ -500,11 +496,14 @@ void Graphics::HierarchicalUpdate2(double dt) {
 		m_pluto_moon2->Update(localTransform);
 	modelStack.pop();
  	// back to the planet coordinate
-
+	modelStack.pop();
 	for (int i = 24; i < 44; i++) {
-		speed = { 1.f + rand(), 1.f + rand(), 1.f + rand() };
+		// t = b1 + ((s-a1)(b2-b1))/(a2-a1)
+
+		float r = -0.01 + ((rand()) * (0.02)) / (1);
+		speed = { 1.f + r, 1.f + r, 1.f + r };
 		dist = { 22, 0, 22. };
-		rotVector = { 1.f + rand(),0.,1.f + rand() };
+		rotVector = { 1.f + r,0.,1.f + r };
 		rotSpeed = { .5, 0, .5 };
 		scale = { .27f, .27f, .27f };
 		localTransform = modelStack.top();
@@ -516,11 +515,11 @@ void Graphics::HierarchicalUpdate2(double dt) {
 		spheres[i]->Update(localTransform);
 		modelStack.pop();
 	}
-	for (int i = 44; i < 64; i++) {
-		
-		speed = { 1.f+rand(), 1.f + rand(), 1.f + rand() };
+	for (int i = 44; i < spheres.size(); i++) {
+		float r = -0.01 + ((rand()) * (0.02)) / (1);
+		speed = { 1.f+r, 1.f + r, 1.f + r };
 		dist = { 47, 0, 47. };
-		rotVector = { 1 + rand(),0.,1 + rand() };
+		rotVector = { 1 + r,0.,1 + r };
 		rotSpeed = { .5, 0, .5 };
 		scale = { .27f, .27f, .27f };
 		localTransform = modelStack.top();
@@ -534,9 +533,14 @@ void Graphics::HierarchicalUpdate2(double dt) {
 	}
 
 
-	modelStack.pop(); 	// back to the sun coordinate
+	 	// back to the sun coordinate
 	// empy stack
 
+	
+	localTransform = glm::translate(getCamera()->Position);
+	localTransform *= glm::translate(getCamera()->Front);
+	localTransform *= glm::scale(glm::vec3(0.75f));
+	//m_rocket->Update(localTransform);
 }
 
 

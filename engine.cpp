@@ -1,12 +1,18 @@
 
 #include "engine.h"
+static Engine* e;
+Graphics* Engine::m_graphics = new Graphics();
 
 Engine::Engine(const char* name, int width, int height)
 {
     m_WINDOW_NAME = name;
     m_WINDOW_WIDTH = width;
     m_WINDOW_HEIGHT = height;
-
+    lastX = 1200/2;
+    lastY = 1000/2;
+    firstMouse = true;
+    e = this;
+    //m_graphics->Initialize(m_WINDOW_WIDTH,m_WINDOW_HEIGHT);
 }
 
 
@@ -88,29 +94,28 @@ void Engine::Display(GLFWwindow* window, double time) {
     m_graphics->HierarchicalUpdate2(time);
 }
 
- void Engine::cursorPositionCallBack(GLFWwindow* window, double xposIn, double yposIn) {
+void Engine::cursorPositionCallBack(GLFWwindow* window, double xposIn, double yposIn) {
+     float xpos = static_cast<float>(xposIn);
+     float ypos = static_cast<float>(yposIn);
 
-    float xpos = static_cast<float>(xposIn);
-    float ypos = static_cast<float>(yposIn);
+     if (e->firstMouse)
+     {
+         e->lastX = xpos;
+         e->lastY = ypos;
+         e->firstMouse = false;
+     }
 
-    if (firstMouse)
-    {
-        lastX = xpos;
-        lastY = ypos;
-        firstMouse = false;
-    }
+     float xoffset = xpos - e->lastX;
+     float yoffset = e->lastY - ypos; // reversed since y-coordinates go from bottom to top
 
-    float xoffset = xpos - lastX;
-    float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+     e->lastX = xpos;
+     e->lastY = ypos;
 
-    lastX = xpos;
-    lastY = ypos;
-
-    m_graphics->getCamera()->ProcessMouseMovement(xoffset, yoffset);
+    e->m_graphics->getCamera()->ProcessMouseMovement(xposIn, yposIn);
 }
  void Engine::scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
  {
-    m_graphics->getCamera()->ProcessMouseScroll(static_cast<float>(yoffset));
+    e->m_graphics->getCamera()->ProcessMouseScroll(static_cast<float>(yoffset));
  }
 
 void Engine::ProcessInput()

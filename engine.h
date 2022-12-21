@@ -6,14 +6,14 @@
 #include "window.h"
 #include "graphics.h"
 
-float lastX = 1200 / 2.0f;
-float lastY = 1000 / 2.0f;
-bool firstMouse = true;
+
 
 class Engine
 {
   public:
+      
       //constructor
+      Engine();
     Engine(const char*  name, int width, int height);
     //destructor
     ~Engine();
@@ -27,19 +27,24 @@ class Engine
     static void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
    
     void setSpeed(glm::vec3 spd) { speed = spd; };
+    const char* m_WINDOW_NAME; //window name
+    int m_WINDOW_WIDTH;
+    int m_WINDOW_HEIGHT;
+    bool m_FULLSCREEN; // is fullscreen.
+    float lastX;
+    float lastY;
+    bool firstMouse;
+
 
   private:
     // Window related variables
     Window *m_window;    //variable for the window.
-    const char* m_WINDOW_NAME; //window name
-    static int m_WINDOW_WIDTH; 
-    static int m_WINDOW_HEIGHT;
-    bool m_FULLSCREEN; // is fullscreen.
+
 
     glm::vec3 speed = glm::vec3(0.f,0.f,0.f);
 
 
-    static Graphics *m_graphics;
+    static Graphics* m_graphics;
 
     bool m_running;
 };

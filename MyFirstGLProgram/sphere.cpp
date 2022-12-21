@@ -15,6 +15,21 @@ Sphere::Sphere()
 	}
 }
 
+Sphere::Sphere(string s) {
+	// Vertex Set Up
+	init(48);
+	// Model Set Up
+	angle = 0.0f;
+	pivotLocation = glm::vec3(0.f, 0.f, 0.f);
+	model = glm::translate(glm::mat4(1.0f), pivotLocation);
+
+	// Buffer Set Up
+	if (!InitBuffers()) {
+		printf("Some buffers not initialized.\n");
+	}
+}
+
+
 Sphere::Sphere(glm::vec3 pivot, int prec)
 {
 	// Vertex Set Up

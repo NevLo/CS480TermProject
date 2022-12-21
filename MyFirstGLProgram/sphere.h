@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <iostream>
 #include "../graphics_headers.h"
+#include <string>
 using namespace std;
 class Sphere
 {
@@ -32,6 +33,7 @@ private:
 public:
 	Sphere();
 	Sphere(glm::vec3 pivot, int prec);
+	Sphere(string s);
 	int getNumVertices();
 	int getNumIndices();
 	void init(int);

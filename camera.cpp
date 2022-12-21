@@ -22,6 +22,7 @@ bool Camera::Initialize(int w, int h)
     Yaw = YAW;
     Pitch = PITCH;
     Zoom = ZOOM;
+    MovementSpeed = SPEED;
 
     view = glm::lookAt(Position, //Eye Position
         glm::vec3(0.0, 0.0, 0.0), //Focus point
@@ -67,8 +68,9 @@ void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
         Position += Right * velocity;
 }
 
-void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch = true)
+void Camera::ProcessMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch)
 {
+
     xoffset *= MouseSensitivity;
     yoffset *= MouseSensitivity;
 
